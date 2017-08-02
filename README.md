@@ -28,9 +28,9 @@ Wikipedia database dump tokenizer
   ```
     $ python tokenizer.py
  ```
-6. Tokens are stored in **results.txt**, unless otherwise specified
+6. Tokens are stored in **tokenizer_tokens.txt**, unless otherwise specified
 
-### word2vec.py
+### train_vocab.py
 Inspect Wikipedia database dump model with Word2Vec
 
 1. Build [fastText](https://github.com/facebookresearch/fastText) using the following commands
@@ -47,8 +47,15 @@ Inspect Wikipedia database dump model with Word2Vec
 4. Running the following command will train the Wikipedia database dump model and store the "words" into the directory **vocabulary** 
 ```
    $ mkdir vocabulary
-   $ python word2vec.py
+   $ python train_vocab.py
 ```
+
+### word2vec.py
+Applying Word2Vec to Wikipedia database dump
+
+1. Runs gensim's Word2Vec to train model (gensim does not have GPU support)
+
+2. Uses gensim's wikipedia parsing (WikiCorpus) to extract and tokenize the Wikipedia database dump compressed in bz2   
 
 ## Built With
 * [Python](https://www.python.org/)
