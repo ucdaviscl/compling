@@ -55,7 +55,7 @@ Applying Word2Vec to Wikipedia database dump
 
 1. Runs gensim's Word2Vec to train model (gensim does not have GPU support)
 
-2. Uses gensim's wikipedia parsing (WikiCorpus) to extract and tokenize the Wikipedia database dump compressed in bz2   
+2. Uses gensim's Wikipedia parsing (WikiCorpus) to extract and tokenize the Wikipedia database dump compressed in bz2   
 
 ## Built With
 * [Python](https://www.python.org/)
