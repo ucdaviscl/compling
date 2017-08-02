@@ -1,37 +1,62 @@
 """
-Created on July 31 2017
+    Created on August 2 2017
+  
+    Applying Word2Vec to Wikipedia database dump 
 
-Short description: Inspect Wikipedia database dump model with word2vec based on the article http://mccormickml.com/2016/04/12/googles-pretrained-word2vec-model-in-python/ 
-
+    Reference: http://zhangbanger.github.io/2015/12/13/allen-ai-challenge-part-3.html 
 """
 
-import os
+import logging, os, sys, datetime, time, multiprocessing
 import gensim
-import logging
+
+from gensim.corpora import WikiCorpus
+from gensim.models import Word2Vec
+from gensim.models.word2vec import LineSentence
+
+start_time = time.time()
+
+timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
+logging.basicConfig(
+    format = '%(asctime)s : %(levelname)s : %(message)s',
+    level = logging.INFO
+)
 
 # Specify data path
-os.chdir('/data/khgkim/compling')
+data_path = '/data/khgkim/compling/dump'
+token_path = '/data/khgkim/compling/word2vec_tokens.txt'
+analogy_path = '/data/khgkim/compling/questions-words.txt'
 
-# Logging code taken from http://rare-technologies.com/word2vec-tutorial/
-logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
+os.chdir(data_path)
 
-# Train model  
-model = gensim.models.KeyedVectors.load_word2vec_format('model.vec')  
+if not (os.path.isfile(token_path)):
+  # Extract and tokenize Wikipedia articles
+  wiki_corpus = WikiCorpus('wiki_dump.xml.bz2')
+  wiki_lines = wiki_corpus.get_texts()
 
-# Retrieve and write out the entire list of "words" from the model
-vocab = model.vocab.keys()
+  # Write wiki_lines out for future use
+  lines_output = open(token_path, 'w')
+  for text in wiki_lines:
+      lines_output.write(" ".join(text) + "\n").encode('utf-8')
+  lines_output.close()
+else:
+  print 'Output message: word2vec_tokens.txt already exists!'
 
-fileNum = 1
-wordsInVocab = len(vocab)
-wordsPerFile = int(100E3)
+model = Word2Vec(
+  sentences=LineSentence(wiki_lines),
+  size=400,
+  negative=5,
+  hs=0,
+  sample=1e-5,
+  window=5,
+  min_count=5,
+  workers=multiprocessing.cpu_count()
+)
 
-# Each file will contain 100,000 entries from the model
-for wordIndex in range(0, wordsInVocab, wordsPerFile):
-    # Write out the chunk to a numbered text file    
-    with open("vocabulary/vocabulary_%.2d.txt" % fileNum, 'w') as f:
-        # For each word in the current chunk        
-        for i in range(wordIndex, wordIndex + wordsPerFile):
-            # Write out and escape any unicode characters            
-            f.write(vocab[i].encode('UTF-8') + '\n')
-    
-    fileNum += 1
+model.save("word2vec.model" % timestamp)
+
+# Sanity Check using an analogy file
+model.accuracy(open(analogy_path))  
+
+# Print execution time
+print("--- Execution time: %s minutes ---" % ((time.time() - start_time)/60))

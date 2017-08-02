@@ -3,6 +3,8 @@
 *.txt
 *.bin
 *.vec
+*.xml
+\vocabulary
 
 # Compiled source #
 ###################
@@ -25,6 +27,7 @@
 *.rar
 *.tar
 *.zip
+*.bz2
 
 # Logs and databases #
 ######################
