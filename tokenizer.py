@@ -51,6 +51,7 @@ if not (os.path.isfile(token_path)):
     f.close()
 else:
   print "Output message: File tokenizer_tokens.txt already exists!"
+  exit()
 
 # Print execution time
 print("--- Execution time: %s minutes ---" % ((time.time() - start_time)/60))

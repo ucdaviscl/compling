@@ -13,6 +13,7 @@ start_time = time.time()
 
 # Specify data path
 data_path = '/data/khgkim/compling'
+analogy_path = '/data/khgkim/compling/questions-words.txt'
 
 os.chdir(data_path)
 
@@ -24,6 +25,9 @@ logging.basicConfig(
 
 # Train model  
 model = gensim.models.KeyedVectors.load_word2vec_format('model.vec')
+
+# Sanity Check using an analogy file
+model.accuracy(open(analogy_path))
 
 # Retrieve and write out the entire list of "words" from the model
 vocab = model.vocab.keys()
@@ -41,7 +45,7 @@ for wordIndex in range(0, wordsInVocab, wordsPerFile):
         # For each word in the current chunk        
         for i in range(wordIndex, wordIndex + wordsPerFile):
             # Write out and escape any unicode characters            
-            f.write(vocab[i].encode('UTF-8') + '\n')
+            f.write((vocab[i] + '\n').encode('utf-8'))
     
     fileNum += 1
 

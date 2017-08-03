@@ -2,7 +2,6 @@
     Created on August 2 2017
   
     Applying Word2Vec to Wikipedia database dump 
-
     Reference: http://zhangbanger.github.io/2015/12/13/allen-ai-challenge-part-3.html 
 """
 
@@ -41,6 +40,7 @@ if not (os.path.isfile(token_path)):
   lines_output.close()
 else:
   print 'Output message: word2vec_tokens.txt already exists!'
+  exit()
 
 model = Word2Vec(
   sentences=LineSentence(wiki_lines),
