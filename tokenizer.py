@@ -35,7 +35,7 @@ if not (os.path.isfile(token_path)):
     for files in wiki.fileids():
       contents = codecs.open(directory + '/' + files, encoding='utf-8').read()
       contents = re.sub('<[^>]*>', '', contents) # XML tags
-      contents = re.sub('((\d+([^a-zA-Z]\d+)+))|\s\d+\s', '', contents) # Numbers
+      contents = re.sub('((?<=\W)|^)(\d+(?!(\-*[a-zA-Z]\-*\s*))(?=\W))', '999', contents) # Numbers
       contents = contents.encode('utf-8')
       # Save changes to the wiki article
       f = open(directory + "/" + files, 'w')
