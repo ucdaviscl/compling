@@ -1,3 +1,4 @@
+![logo](https://user-images.githubusercontent.com/18225387/28990142-50eb6270-792f-11e7-81e4-3f68522c677d.png)
 [Computational Linguistics Lab](http://compling.ucdavis.edu/)
 ===
 [*Department of Linguistics*](http://linguistics.ucdavis.edu/), [*UC Davis*](https://www.ucdavis.edu/)
