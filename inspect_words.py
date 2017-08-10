@@ -12,8 +12,8 @@ import gensim
 start_time = time.time()
 
 # Specify data path
-data_path = '/data/khgkim/compling'
-analogy_path = '/data/khgkim/compling/questions-words.txt'
+data_path = "." #'/data/khgkim/compling'
+analogy_path = "questions-words.txt" #'/data/khgkim/compling/questions-words.txt'
 
 os.chdir(data_path)
 
@@ -45,7 +45,7 @@ for wordIndex in range(0, wordsInVocab, wordsPerFile):
         # For each word in the current chunk        
         for i in range(wordIndex, wordIndex + wordsPerFile):
             # Write out and escape any unicode characters            
-            f.write((vocab[i] + '\n').encode('utf-8'))
+            f.write(vocab[i] + '\n')
     
     fileNum += 1
 
