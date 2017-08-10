@@ -20,8 +20,8 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/data/khgkim/wikiextractor/text'
-token_path = '/data/khgkim/compling/tokenizer_tokens.txt'
+dump_path = '/media/khgkim/data/khgkim/compling/text'
+token_path = '/media/khgkim/data/khgkim/compling/tokenizer_tokens.txt'
 
 os.chdir(dump_path)
 
@@ -37,7 +37,7 @@ if not (os.path.isfile(token_path)):
       contents = re.sub('<[^>]*>(.*\r?\n){2}', '', contents) # Beginning XML tag + article title
       contents = re.sub('<[^>]*>', '', contents) # Ending XML tag
       # Find all digit occurences 
-      for digits in re.findall('((?<=\W)|^)(\d+(?!(\-*[a-zA-Z]\-*\s*))(?=\W))', contents) 
+      for digits in re.findall('((?<=\W)|^)(\d+(?!(\-*[a-zA-Z]\-*\s*))(?=\W))', contents): 
         temp = re.sub('\d', '9', digits[1]) # Placeholder for matching groups
         contents = re.sub(digits[1], temp, contents) # Replace
       contents = contents.encode('utf-8')
