@@ -9,6 +9,7 @@ import glob, codecs, re
 import nltk
 
 from nltk.corpus import PlaintextCorpusReader
+from nltk.probability import FreqDist
 
 start_time = time.time()
 
@@ -20,12 +21,16 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/media/khgkim/data/khgkim/compling/text'
-token_path = '/media/khgkim/data/khgkim/compling/tokenizer_tokens.txt'
+dump_path = '/media/khgkim/data/khgkim/compling/text/'
+token_path = '/media/khgkim/data/khgkim/compling/'
+filename = 'tokenizer_tokens.txt'
 
 os.chdir(dump_path)
 
-if not (os.path.isfile(token_path)):
+# Initialize tok_corp
+tok_corp = []
+
+if not (os.path.isfile(token_path + filename)):
   print timestamp
   # For each directory
   for directory in glob.glob("*"):
@@ -46,13 +51,20 @@ if not (os.path.isfile(token_path)):
       f.write(contents)
       f.close()
     # Tokenize articles
-    tok_corp = []
-    tok_corp = wiki.words(wiki.fileids())
-    # Save tokens to tokens.txt
-    f = codecs.open(token_path, "a+", "utf-8")
+    tok_corp += wiki.words(wiki.fileids())
+    # Save tokens to tokenizer_tokens.txt
+    f = codecs.open(token_path + filename, "a+", "utf-8")
     for words in tok_corp:
       f.write(words + " ")
     f.close()
+  # Replace UNK tokens based on frequency and save to tokenizer_tokens2.txt
+  f = codecs.open(token_path + filename, "w", "utf-8")
+  fdist = FreqDist(tok_corp)
+  for words in tok_corp:
+    if (fdist[words] <= 10):
+      f.write("UNK" + " ")   
+    else: 
+      f.write(words + " ")
 else:
   print "Output message: File tokenizer_tokens.txt already exists!"
   exit()
