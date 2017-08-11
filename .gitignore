@@ -5,7 +5,7 @@
 *.vec
 *.xml
 \vocabulary
-\text
+\text*
 
 # Compiled source #
 ###################
