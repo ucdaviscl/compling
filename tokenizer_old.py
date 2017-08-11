@@ -29,7 +29,6 @@ os.chdir(dump_path)
 
 # Initialize tok_corp
 tok_corp = []
-tok_list = []
 
 if not (os.path.isfile(token_path + filename)):
   print timestamp
@@ -52,35 +51,31 @@ if not (os.path.isfile(token_path + filename)):
       f.write(contents)
       f.close()
     # Tokenize articles
-    tok_corp.append(wiki.words(wiki.fileids()))
+    tok_corp += wiki.words(wiki.fileids())
     # Save tokens to tokenizer_tokens.txt
     f = codecs.open(token_path + filename, "a+", "utf-8")
-    count = 0 # Counter to limit number of words per line
+    count = 0 #counter to limit number of words per line
     for words in tok_corp:
-      for word in words:
-        tok_list.append(word)
-        f.write(word + " ")
-        count += 1
-      if (count == 30): # Check counter to keep words per line < 30
-        f.write("\n")
-        count = 0
-    tok_corp = [] # Clear tok_corp
+      f.write(words + " ")
+      count += 1
+      if count == 30: #check counter to keep words per line < 30
+	f.write("\n")
+	count = 0
     f.close()
   # Replace UNK tokens based on frequency and save to tokenizer_tokens2.txt
-  filename2 = 'tokenizer_tokens2.txt'
-  f = codecs.open(token_path + filename2, "a+", "utf-8")
-  fdist = FreqDist(tok_list)
+  filename = 'tokenizer_tokens2.txt'
+  f = codecs.open(token_path + filename, "a+", "utf-8")
+  fdist = FreqDist(tok_corp)
   count = 0
-  for word in tok_list:
-    if (fdist[word] <= 10):
+  for words in tok_corp:
+    if (fdist[words] <= 10):
       f.write("UNK" + " ")   
     else: 
-      f.write(word + " ")
-      count += 1
-    if count == 30: # Check counter to keep words per line < 30
-      f.write("\n")
-      count = 0
-  f.close()
+      f.write(words + " ")
+    count += 1
+    if count == 30: #check counter to keep words per line < 30
+	f.write("\n")
+	count = 0
 else:
   print "Output message: File tokenizer_tokens.txt already exists!"
   exit()
