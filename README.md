@@ -45,7 +45,8 @@ Inspect Wikipedia database dump model with Word2Vec and create vocabulary files
    $ ./fasttext skipgram -input results.txt -output model
 ```
 3. Running the command above will save two files: **model.bin** and **model.vec**. **model.vec** is a text file containing the word vectors, one per line. **model.bin** is a binary file containing the parameters of the model along with the dictionary and all hyper parameters. 
-4. Running the following command will train the Wikipedia database dump model and store the "words" into the directory **vocabulary** 
+4. Download [**questions-words.txt**](https://storage.googleapis.com/google-code-archive-source/v2/code.google.com/word2vec/source-archive.zip). This file contains approximately 19,500 analogies, divided into several categories, that will be used to perform a sanity check of the Wikipedia database dump model. 
+5. Running the following command will train the Wikipedia database dump model and store the "words" into the directory **vocabulary**. It will also perform a sanity check of the model using **questions-words.txt** and output the accuracies of the model's predictions for each analogy category, as well as the overall accuracy of the model's predictions.  
 ```
    $ mkdir vocabulary
    $ python inspect_words.py
@@ -55,7 +56,6 @@ Inspect Wikipedia database dump model with Word2Vec and create vocabulary files
 Applying Word2Vec to Wikipedia database dump
 
 1. Runs gensim's Word2Vec to train model (gensim does not have GPU support)
-
 2. Uses gensim's Wikipedia parsing (WikiCorpus) to extract and tokenize the Wikipedia database dump compressed in bz2   
 
 ## Built With
