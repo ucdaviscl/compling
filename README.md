@@ -29,7 +29,7 @@ Wikipedia database dump tokenizer
   ```
     $ python tokenizer.py
  ```
-6. After running the script, tokens are stored in **tokenizer_tokens.txt**, unless otherwise specified
+6. After running the script, tokens are stored in **tokenizer_tokens.txt**, unless otherwise specified. The script also outputs **tokenizer_tokens2.txt**, in which infrequent tokens (those appearing <= 10 times) are replaced with an 'UNK' token.
 
 ### inspect_words.py
 Inspect Wikipedia database dump model with Word2Vec and create vocabulary files
@@ -66,4 +66,4 @@ Applying Word2Vec to Wikipedia database dump
 ## Contributors
 * [Richard Kim](https://github.com/khgkim)
 * [Lauren Namdar](https://github.com/lnamdar)
-* Samuel Davidson
+* [Samuel Davidson](https://github.com/ssdavidson)
