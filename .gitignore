@@ -1,11 +1,12 @@
 # Data files #
 ##############
-*.txt
 *.bin
 *.vec
 *.xml
 \vocabulary
-\text*
+\test
+\text
+\old
 
 # Compiled source #
 ###################

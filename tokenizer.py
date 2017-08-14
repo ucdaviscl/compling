@@ -24,11 +24,11 @@ logging.basicConfig(
 dump_path = '/media/khgkim/data/khgkim/compling/text/'
 token_path = '/media/khgkim/data/khgkim/compling/'
 filename = 'tokenizer_tokens.txt'
+filename2 = 'tokenizer_tokens2.txt'
 
 os.chdir(dump_path)
 
-# Initialize tok_corp
-tok_corp = []
+# Initialize list for token frequency 
 tok_list = []
 
 if not (os.path.isfile(token_path + filename)):
@@ -51,36 +51,33 @@ if not (os.path.isfile(token_path + filename)):
       f = open(directory + "/" + files, 'w')
       f.write(contents)
       f.close()
+      del contents 
     # Tokenize articles
-    tok_corp.append(wiki.words(wiki.fileids()))
-    # Save tokens to tokenizer_tokens.txt
+    tok_corp = []
+    tok_corp = wiki.words(wiki.fileids())
+    # Save tokens to tokenizer_tokens.txt and tok_list
     f = codecs.open(token_path + filename, "a+", "utf-8")
-    count = 0 # Counter to limit number of words per line
-    for words in tok_corp:
-      for word in words:
-        tok_list.append(word)
-        f.write(word + " ")
-        count += 1
-      if (count == 30): # Check counter to keep words per line < 30
-        f.write("\n")
-        count = 0
-    tok_corp = [] # Clear tok_corp
+    for word in tok_corp:
+      tok_list.append(word)
+      f.write(word + " ")
+    f.write("\n")
+    del tok_corp 
+    del wiki
     f.close()
   # Replace UNK tokens based on frequency and save to tokenizer_tokens2.txt
-  filename2 = 'tokenizer_tokens2.txt'
-  f = codecs.open(token_path + filename2, "a+", "utf-8")
-  fdist = FreqDist(tok_list)
-  count = 0
-  for word in tok_list:
-    if (fdist[word] <= 10):
-      f.write("UNK" + " ")   
-    else: 
-      f.write(word + " ")
-      count += 1
-    if count == 30: # Check counter to keep words per line < 30
-      f.write("\n")
-      count = 0
-  f.close()
+  if not (os.path.isfile(token_path + filename2)):
+    f = codecs.open(token_path + filename2, "a+", "utf-8")
+    fdist = FreqDist(tok_list)
+    for word in tok_list:
+      if (fdist[word] <= 10):
+        f.write("UNK" + " ")   
+      else: 
+        f.write(word + " ")
+    del tok_list
+    f.close()
+  else:
+    print "Output message: File tokenizer_tokens2.txt already exists!"
+    exit()
 else:
   print "Output message: File tokenizer_tokens.txt already exists!"
   exit()
