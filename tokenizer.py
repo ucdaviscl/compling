@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/media/khgkim/data/khgkim/compling/test/'
+dump_path = '/media/khgkim/data/khgkim/compling/text/'
 token_path = '/media/khgkim/data/khgkim/compling/'
 filename = 'tokenizer_tokens.txt'
 filename2 = 'tokenizer_tokens2.txt'
@@ -38,9 +38,9 @@ if not (os.path.isfile(token_path + filename)):
     # Get all wiki articles
     wiki = PlaintextCorpusReader(directory, 'wiki_.*')
     # Tokenize articles
-    tok_corp = []
     tok_corp = wiki.words(wiki.fileids())
     # Save tokens to tokenizer_tokens.txt and tok_list
+    f = codecs.open(token_path + filename, "a+", "utf-8")
     for word in tok_corp:
       tok_list.append(word)
       f.write(word + " ")
