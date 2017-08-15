@@ -1,6 +1,5 @@
 """
     Created on July 27 2017
-
     Wikipedia database dump tokenizer
 """
 

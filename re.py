@@ -5,7 +5,7 @@
 """
 
 import os, logging, sys, datetime, time
-import glob, codecs, re
+import glob, io, re
 import nltk
 
 from nltk.corpus import PlaintextCorpusReader
@@ -34,13 +34,12 @@ for directory in glob.glob("*"):
   for files in wiki.fileids():
     s = codecs.open(directory + '/' + files, encoding='utf-8')
     contents = s.read()
-    s.close()
     contents = re.sub('<[^>]*>(.*\r?\n){2}', '', contents) # Beginning XML tag + article title
     contents = re.sub('<[^>]*>', '', contents) # Ending XML tag
-    # Find all digit occurences 
-    for digits in re.findall('((?<=\W)|^)(\d+(?!(\-*[a-zA-Z]\-*\s*))(?=\W))', contents):
+    # Find all digit occurences
+    for digits in re.findall('((?<=\W)|^)(\d+s*(?!(\-*[a-zA-Z]\-*\s*))(?=\W))', contents):
       temp = re.sub('\d', '9', digits[1]) # Placeholder for matching groups
-      contents = re.sub(digits[1], temp, contents) # Replace
+      contents = re.sub(digits[1], temp, contents, count=1) # Replace
       del temp
     contents = contents.encode('utf-8')
     # Save changes to the wiki article
