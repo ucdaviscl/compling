@@ -22,7 +22,7 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/media/khgkim/data/khgkim/compling/text/'
+dump_path = '/media/khgkim/data/khgkim/compling/test/'
 
 os.chdir(dump_path)
 
@@ -32,8 +32,9 @@ for directory in glob.glob("*"):
   wiki = PlaintextCorpusReader(directory, 'wiki_.*')
   # Replace characters using regular expression
   for files in wiki.fileids():
-    s = codecs.open(directory + '/' + files, encoding='utf-8')
+    s = io.open(directory + '/' + files, encoding='utf-8')
     contents = s.read()
+    s.close()
     contents = re.sub('<[^>]*>(.*\r?\n){2}', '', contents) # Beginning XML tag + article title
     contents = re.sub('<[^>]*>', '', contents) # Ending XML tag
     # Find all digit occurences
