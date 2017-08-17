@@ -3,7 +3,6 @@
 *.bin
 *.vec
 *.xml
-re_line.py
 \vocabulary
 \test*
 \text

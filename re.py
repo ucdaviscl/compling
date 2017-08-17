@@ -22,7 +22,7 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/media/khgkim/data/khgkim/compling/test/'
+dump_path = '/media/khgkim/data/khgkim/compling/text/'
 
 os.chdir(dump_path)
 
