@@ -20,7 +20,7 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/media/khgkim/data/khgkim/compling/text/'
+dump_path = '/media/khgkim/data/khgkim/compling/test4/'
 token_path = '/media/khgkim/data/khgkim/compling/'
 filename = 'tokenizer_tokens.txt'
 filename2 = 'tokenizer_tokens2.txt'
@@ -35,7 +35,7 @@ if not (os.path.isfile(token_path + filename)):
   # For each directory
   for directory in glob.glob("*"):
     # Get all wiki articles
-    wiki = PlaintextCorpusReader(directory, 'wiki_.*')
+    wiki = PlaintextCorpusReader(directory, '.*_processed')
     # Tokenize articles
     tok_corp = wiki.words(wiki.fileids())
     # Save tokens to tokenizer_tokens.txt and tok_list
@@ -47,9 +47,10 @@ if not (os.path.isfile(token_path + filename)):
     del tok_corp 
     del wiki
     f.close()
-  print "Finished tokenizer_tokens.txt"
+  print "Finished tokenizer_tokens.txt in %s minutes ---" % ((time.time() - start_time)/60) 
   # Replace UNK tokens based on frequency and save to tokenizer_tokens2.txt
   if not (os.path.isfile(token_path + filename2)):
+    print "Starting tokenizer_tokens2.txt"
     f = codecs.open(token_path + filename2, "a+", "utf-8")
     fdist = FreqDist(tok_list)
     for word in tok_list:
