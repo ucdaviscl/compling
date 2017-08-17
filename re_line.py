@@ -34,14 +34,14 @@ for directory in glob.glob("*"):
   for files in wiki.fileids():
     with io.open(directory + '/' + files, encoding='utf-8') as s:
       for line in s:      
-        contents = line #s.read()
-      # Find all digit occurences
+        contents = line 
+        # Find all digit occurences
         for digits in re.findall('((?<=\W)|^)(\d+s*(?!(\-*[a-zA-Z]\-*\s*))(?=\W))', contents):
           temp = re.sub('\d', '9', digits[1]) # Placeholder for matching groups
           contents = re.sub(digits[1], temp, contents, count=1) # Replace
           del temp
         contents = contents.encode('utf-8')
-      # Save changes to the wiki article
+        # Save changes to the wiki article
         f = open(directory + "/" + files + '_processed', 'a+')
         f.write(contents)
         f.close()
