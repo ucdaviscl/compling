@@ -42,15 +42,15 @@ if not (os.path.isfile(token_path + filename)):
     # Get all wiki articles
     for files in os.listdir(directory):
       with io.open(directory + '/' + files, encoding='utf-8') as s:
-        string = s.read()
-        tokens = nltk.word_tokenize(string)
-        for word in tokens:
-          tokensFile.write(word + " ")
-          lineCount += 1
-          if lineCount >= 60:
+        string = s.read() #read each article to string
+        tokens = nltk.word_tokenize(string) #tokenize string
+        for word in tokens: 
+          tokensFile.write(word + " ") #write word to tokens file
+          lineCount += 1 
+          if lineCount >= 60: #keep lines under 60 words 
             tokensFile.write('\n')
             lineCount = 0
-        fDistTotal = fDistTotal + FreqDist(tokens)
+        fDistTotal = fDistTotal + FreqDist(tokens) #add freq dist of line to total
         del tokens
         del string
       s.close()
@@ -61,13 +61,13 @@ if not (os.path.isfile(token_path + filename)):
   with codecs.open(token_path + filename, "a+", "utf-8") as t:
     for line in t:
       for word in nltk.word_tokenize(line):
-        if (fDistTotal[word] <= 10):
+        if (fDistTotal[word] <= 10): #if frequency <= 10, replace with UNK
           f.write("UNK" + " ")   
         else: 
           f.write(word + " ")
   f.close()
   f = open(token_path + filename3, "wb")
-  pickle.dump(fDistTotal, f)
+  pickle.dump(fDistTotal, f) #save total freq dist to file
   f.close()
 else:
   print "Output message: File tokenizer_tokens.txt already exists!"
