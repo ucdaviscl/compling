@@ -4,8 +4,9 @@
 """
 
 import os, logging, sys, datetime, time
-import glob, codecs, re
+import glob, io, codecs, re
 import nltk
+import pickle
 
 from nltk.corpus import PlaintextCorpusReader
 from nltk.probability import FreqDist
@@ -20,53 +21,56 @@ logging.basicConfig(
 )
 
 # Specify paths
-dump_path = '/media/khgkim/data/khgkim/compling/test4/'
+dump_path = '/media/khgkim/data/khgkim/compling/processed/'
 token_path = '/media/khgkim/data/khgkim/compling/'
 filename = 'tokenizer_tokens.txt'
 filename2 = 'tokenizer_tokens2.txt'
+filename3 = 'freqDist.pickle'
 
 os.chdir(dump_path)
 
-# Initialize list for token frequency 
-tok_list = []
+#counter for line length control
+lineCount = 0
 
 if not (os.path.isfile(token_path + filename)):
   print timestamp
+  tokensFile = codecs.open(token_path + filename, "a+", "utf-8")
+  fDistTotal = FreqDist()
   # For each directory
   for directory in glob.glob("*"):
+    print  "directory: " + directory
     # Get all wiki articles
-    wiki = PlaintextCorpusReader(directory, '.*_processed')
-    # Tokenize articles
-    tok_corp = wiki.words(wiki.fileids())
-    # Save tokens to tokenizer_tokens.txt and tok_list
-    f = codecs.open(token_path + filename, "a+", "utf-8")
-    for word in tok_corp:
-      tok_list.append(word)
-      f.write(word + " ")
-    f.write("\n")
-    del tok_corp 
-    del wiki
-    f.close()
+    for files in os.listdir(directory):
+      with io.open(directory + '/' + files, encoding='utf-8') as s:
+        string = s.read()
+        tokens = nltk.word_tokenize(string)
+        for word in tokens:
+          tokensFile.write(word + " ")
+          lineCount += 1
+          if lineCount >= 60:
+            tokensFile.write('\n')
+            lineCount = 0
+        fDistTotal = fDistTotal + FreqDist(tokens)
+        del tokens
+        del string
+      s.close()
+  tokensFile.close()
   print "Finished tokenizer_tokens.txt in %s minutes ---" % ((time.time() - start_time)/60) 
   # Replace UNK tokens based on frequency and save to tokenizer_tokens2.txt
-  if not (os.path.isfile(token_path + filename2)):
-    print "Starting tokenizer_tokens2.txt"
-    f = codecs.open(token_path + filename2, "a+", "utf-8")
-    fdist = FreqDist(tok_list)
-    for word in tok_list:
-      if (fdist[word] <= 10):
-        f.write("UNK" + " ")   
-      else: 
-        f.write(word + " ")
-    del tok_list
-    del fdist
-    f.close()
-  else:
-    print "Output message: File tokenizer_tokens2.txt already exists!"
-    exit()
+  f = codecs.open(token_path + filename2, "a+", "utf-8")  
+  with codecs.open(token_path + filename, "a+", "utf-8") as t:
+    for line in t:
+      for word in nltk.word_tokenize(line):
+        if (fDistTotal[word] <= 10):
+          f.write("UNK" + " ")   
+        else: 
+          f.write(word + " ")
+  f.close()
+  f = open(token_path + filename3, "wb")
+  pickle.dump(fDistTotal, f)
+  f.close()
 else:
   print "Output message: File tokenizer_tokens.txt already exists!"
   exit()
-
 # Print execution time
 print("--- Execution time: %s minutes ---" % ((time.time() - start_time)/60))
