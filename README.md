@@ -55,8 +55,9 @@ Inspect Wikipedia database dump model with Word2Vec and create vocabulary files
 ### word2vec.py
 Applying Word2Vec to Wikipedia database dump
 
-1. Runs gensim's Word2Vec to train model (gensim does not have GPU support)
-2. Uses gensim's Wikipedia parsing (WikiCorpus) to extract and tokenize the Wikipedia database dump compressed in bz2   
+1. Uses gensim's Wikipedia parsing (WikiCorpus) to extract and tokenize the Wikipedia database dump compressed in bz2x.   
+2. Runs gensim's Word2Vec to train model (gensim does not have GPU support). Saved as **word2vec.model**.
+3. Performs sanity check with the file specified in **analogy_path** (questions-word.txt) 
 
 ## Built With
 * [Python](https://www.python.org/)
